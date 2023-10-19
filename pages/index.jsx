@@ -21,7 +21,7 @@ export default function Index() {
                 <Input texto={"Matricula/Cadastro"}></Input>
                 <Input texto={"Senha"}></Input>
             </div>
-            <Button texto={"login"} tamanho={"w-[575px] p-4"}></Button>
+            <Button texto={"login"} tamanho={"w-[575px] p-4"} ></Button>
             <div className="flex gap-1">
             <p>Não tem uma conta? </p>
           <Link href={"cadastro"}> <p className="text-[#1B4079] ">Cadastre-se</p> </Link>
