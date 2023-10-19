@@ -1,3 +1,4 @@
+
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Link from "next/link";
@@ -32,4 +33,5 @@ export default function Index() {
       </div>
     </div>
   );
+
 }
