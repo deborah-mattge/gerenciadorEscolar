@@ -2,6 +2,7 @@ import { useState } from "react";
 import Subtitle from "@/components/Subtitle";
 import Professor from "@/components/Professor";
 import InputUser from "@/components/InputUser";
+import { version } from "react-dom";
 
 export default function Page() {
   const chaveAPIComImagem =
@@ -10,8 +11,10 @@ export default function Page() {
     "https://api.themoviedb.org/3/discover/movie?page= ";
 
   const axios = require("axios").default;
+  let API_URL = "http://10.4.96.38:8082"
   let lista = [];
   let listaTurmas = [];
+  let bosss = false;
 
   const [professoresHtml, setProfessoresHtml] = useState([]);
   const [containerListaProfs, setcontainerListaProfs] = useState(
@@ -23,109 +26,23 @@ export default function Page() {
   var turmaObj = new Object();
   turmaObj.id = 2;
   turmaObj.nome = "";
-  var professor = new Object();
-  professor.title = "oi";
-  professor.original_language = "en";
-  /*
-  professor.nome = ""
-  professor.disciplina = ""
-  professor.id=1
-  */
-  const  [listaProfessores, setListaProfessores] = useState([])
+  var professorObj = new Object();
+  professorObj.nome = ""
+  professorObj.disciplina = ""
+  professorObj.id = 1
+
+  const [listaProfessores, setListaProfessores] = useState([])
 
   function getProfessores() {
     axios
-      .get(buscaAPIPorPagina + 7 + "&" + chaveAPIComImagem)
+      .get(API_URL + "/professor")
       .then((response) => {
-        lista = response.data.results;
+        lista = response.data;
       })
       .catch((error) => console.log(error));
   }
 
-  function renderizarProfessores() {
-    /* Versão Correta, para funcionar é necessário que seja realizada a mudança no objeto professor 
-
-
-    let input = document.querySelector(#addTeacher)
-
-    if (listaProfessores.length>0){
-        listaProfessores.map((prof) => {
-        if (prof.nome == input.value) {
-            input.value = "";
-            alert("Já ta adicionado pô");
-        }
-      })
-    }
-
-      lista.map((professor, indice)=>{
-      if (professor.nome == input.value){
-            professoresHtml.push(<Professor key={indice+2} nome={professor.nome} disciplina={professor.disciplina.nome} />);
-            professorObj.nome = professor.nome
-            professorObj.disciplina = professor.disciplina.id
-            professorObj.id = professor.id
-            listaProfessores.push(professorObj)
-        }
-      })
-      input.value = ""
-      
-        setProfessoresHtml(professoresHtml);
-        setcontainerListaProfs(
-      <div className="flex flex-col gap-8 pt-8 bg-[#EFEFE8] w-full">
-        {professoresHtml}
-      </div>
-    )
-      
-
-        */
-
-    console.log(lista);
-    if (listaProfessores.length > 0) {
-      listaProfessores.map((prof) => {
-        console.log("sou o professor\n" + prof);
-        if (prof.title == document.querySelector("#addTeacher").value) {
-          document.querySelector("#addTeacher").value = "";
-          alert("Já ta adicionado pô");
-        }
-      });
-    }
-
-    lista.map((item, indice) => {
-      if (item.title === document.querySelector("#addTeacher").value) {
-        professoresHtml.push(
-          <Professor
-            key={indice + 2}
-            nome={item.title}
-            disciplina={item.original_language}
-          />
-        );
-        professor.title = item.title;
-        professor.original_language = item.original_language;
-        listaProfessores.push(professor);
-        console.log(listaProfessores)
-      }
-      console.log(item.title);
-    });
-    console.log(listaProfessores);
-    document.querySelector("#addTeacher").value = "";
-
-    setProfessoresHtml(professoresHtml);
-    setcontainerListaProfs(
-      <div className="flex flex-col gap-8 pt-8 bg-[#EFEFE8] w-full">
-        {professoresHtml}
-      </div>
-    );
-  }
-
-  function getTurmas() {
-    axios
-      .get(API_URL+"/turma")
-      .then((response) => {
-        listaTurmas = response.data.results;
-      })
-      .catch((error) => console.log(error));
-  }
-
-  getProfessores();
+  getProfessores()
 
   function adicionarTurmaAoProfessor(id) {
     listaProfessores.map((professor) => {
@@ -143,26 +60,105 @@ export default function Page() {
     // listaProfessores = [];
   }
 
+
+
+
+
+
+
+
+
+  const getTurmasT = async () => {
+    const response = await axios.get(API_URL+"/turma");
+    console.log(response.data)
+    listaTurmas = response.data
+
+    adicionarTurmaAoProfessor(turmaObj.id)
+
+    
+  };
+
   function adicionarTurma() {
     let turmaInput = document.querySelector("#addTurma");
     axios
-      .post("/turma", {
+      .post(API_URL + "/turma", {
         nome: turmaInput.value,
       })
       .then((response) => {
-        getTurmas();
-        listaTurmas.map((turma) => {
-          if (turma.nome == turmaInput.nome) {
-            turmaObj.nome = turma.nome;
-            turmaObj.id = turma.id;
-            adicionarTurmaAoProfessor(turmaObj.id);
-          }
-        });
-
-        turmaInput.value = "";
+        console.log(response)
+        getTurmasT()
+        ver(listaTurmas)
       })
       .catch((error) => console.error(error));
+
+
   }
+
+  function ver(lista){
+    console.log(lista)
+  }
+
+  function renderizarProfessores() {
+
+
+    let input = document.querySelector("#addTeacher")
+
+    if (listaProfessores.length > 0) {
+      listaProfessores.map((prof) => {
+        if (prof.nome == input.value) {
+          input.value = "";
+          alert("Já ta adicionado pô");
+        }
+      })
+    }
+    console.log(lista)
+    lista.map((professorasd, indice) => {
+      console.log(professorasd?.nome)
+      let nome =""
+      console.log(nome = professorasd?.nome)
+      console.log(professorasd?.nome)
+
+      if (professorasd?.nome != undefined &&
+         professorasd?.nome == input.value) {
+        professoresHtml.push(<Professor key={indice + 2}
+           nome={professorasd?.nome}
+            disciplina={professorasd.disciplina.nome} />);
+        professorObj.nome = professorasd?.nome
+        professorObj.disciplina = professorasd.disciplina.id
+        professorObj.id = professorasd.id
+        listaProfessores.push(professorObj)
+      }
+    })
+    input.value = ""
+
+    setProfessoresHtml(professoresHtml);
+    setcontainerListaProfs(
+      <div className="flex flex-col gap-8 pt-8 bg-[#EFEFE8] w-full">
+        {professoresHtml}
+      </div>
+    )
+  }
+
+
+
+  function getTurmas() {
+    axios
+      .get(API_URL + "/turma")
+      .then((response) => {
+        console.log(response.data)
+
+        listaTurmas = response.data;
+        return response.data
+      })
+      .catch((error) => console.log(error));
+  }
+
+
+  getProfessores();
+  getTurmas()
+
+
+
 
   return (
     <div className="w-screen h-screen flex flex-col items-center">
@@ -172,7 +168,7 @@ export default function Page() {
           <img src="profile.svg" alt="" />
         </div>
       </header>
-      <div className="mt-16 flex flex-col w-4/5 h-aUto  bg-[#EFEFEF] rounded-lg">
+      <div className="mt-16 flex flex-col w-4/5 h-auto  bg-[#EFEFEF] rounded-lg">
         <div className="flex justify-between bg-[#1B4079] rounded-t-lg p-4 py-6 w-full items-center">
           <p className="text-[#FCFCFC] w-full h-6 text-2xl items-center flex font-semibold">
             Criar Turma
@@ -214,8 +210,10 @@ export default function Page() {
             {/* ou usa a variavel div */}
             <button
               className="bg-[#1B4079] py-4 px-12 buttonText text-[#FCFCFC] rounded-lg"
-              onClick={() => {
-                adicionarTurma();
+              onClick={(e) => {
+               adicionarTurma()
+
+               
               }}
             >
               Criar Turma
