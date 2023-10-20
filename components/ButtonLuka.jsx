@@ -32,7 +32,7 @@ export default function ButtonLuka(props){
     return (
         <div className="flex bg-[#5D779F] p-4 pr-8 gap-4 rounded-lg oi">
         <button className="buttonText  text-[#FCFCFC]" onClick={()=>{
-            procuraMateria(props.id, 8)
+            procuraMateria(props.id, 100)
         }}>{texto}</button>
         <img src="bag.svg" width={"24px"}/>
         </div>
