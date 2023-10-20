@@ -12,7 +12,7 @@ export default function InputUser(props) {
     return (
         <div className={"w-full inputText p-4 bg-[#E8E8E8] inputText rounded-lg text-[#1B4079] flex items-center" +
             (props.write ? " border-solid border-2 border-[#1B4079]" : " inputDisable bg-[#E8E8E8]")}>
-            <p>Romario Hornburg</p>
+            <p>{props.materia}</p>
         </div>
     )
 
