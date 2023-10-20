@@ -15,7 +15,7 @@ export default function cadastro(){
   
         <div id="parte branca " className="bg-white rounded-l-[50px] w-3/5 h-full flex justify-center items-center "  >
           <div className="h-[717px] w-[717px]  rounded-xl flex flex-col gap-[30px] justify-center items-center sombra ">
-              <h1 className=" text-5xl font-extrabold">Cadastr</h1>
+              <h1 className=" text-5xl font-extrabold">Cadastro</h1>
               <div className="flex flex-col gap-8 w-full p-10 items-center">
                   <Input texto={"Nome"}></Input>
                   <Input texto={"Matricula/ Cadastro"}></Input>

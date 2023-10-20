@@ -4,6 +4,41 @@ import Input from "@/components/Input";
 import Link from "next/link";
 
 export default function Index() {
+  let usuarios = []
+  const apiUrlFilmes = "https://api.themoviedb.org/3/movie/157336?";
+  const buscaAPIPorPagina =
+  "https://api.themoviedb.org/3/discover/movie?page= ";
+  const chaveAPIComImagem =
+  "api_key=42e55a6cd147de3659e21ea8878ab230&append_to_response=videos,images";
+  function pegaDados(){
+    
+    fetch(apiUrlFilmes + chaveAPIComImagem, {})
+  .then((res) => res.json())
+  .then((data) => {
+    console.log(data);
+    usuarios.push(data)
+   
+  });
+}
+
+
+  function validarDados(){
+   let cadastro =  document.querySelector("#cadastro");
+   let senha =  document.querySelector("#senha");
+    pegaDados();
+   
+   console.log(cadastro.value);
+   console.log(senha.value);
+
+        if(data.title == cadastro.value){
+          console.log("trrr")
+
+        }else{
+          console.log("bahhh")
+        }
+  }
+
+  
   return (
     <div className="w-screen h-screen bg-[#8B9EBB] flex justify-between">
       <div id="Parte azul" className=" flex flex-col gap-[300px]">
@@ -19,10 +54,10 @@ export default function Index() {
         <div className="h-[717px] w-[717px]  rounded-xl flex flex-col gap-[50px] justify-center items-center sombra ">
             <h1 className=" text-5xl font-extrabold">Login</h1>
             <div className="flex flex-col gap-9 w-full p-10 items-center">
-                <Input texto={"Matricula/Cadastro"}></Input>
-                <Input texto={"Senha"}></Input>
+                <Input id={"cadastro"} texto={"Matricula/Cadastro"}></Input>
+                <Input id={"senha"} texto={"Senha"}></Input>
             </div>
-            <Button texto={"login"} tamanho={"w-[575px] p-4"} ></Button>
+            <Button texto={"login"} tamanho={"w-[575px] p-4"} parentToChild={validarDados}  ></Button>
             <div className="flex gap-1">
             <p>Não tem uma conta? </p>
           <Link href={"cadastro"}> <p className="text-[#1B4079] ">Cadastre-se</p> </Link>
