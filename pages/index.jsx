@@ -1,44 +1,58 @@
 
 import Button from "@/components/Button";
 import Input from "@/components/Input";
+import { logarUsuario, usuarioLogado } from "@/data/usuario";
+
 import Link from "next/link";
 
 export default function Index() {
+  const axios = require("axios").default;
   let usuarios = []
-  const apiUrlFilmes = "https://api.themoviedb.org/3/movie/157336?";
-  const buscaAPIPorPagina =
-  "https://api.themoviedb.org/3/discover/movie?page= ";
-  const chaveAPIComImagem =
-  "api_key=42e55a6cd147de3659e21ea8878ab230&append_to_response=videos,images";
+  const apiURl = "http://localhost:8082";
   function pegaDados(){
+    logarUsuario("abacate")
     
-    fetch(apiUrlFilmes + chaveAPIComImagem, {})
-  .then((res) => res.json())
-  .then((data) => {
-    console.log(data);
-    usuarios.push(data)
-   
-  });
+   axios.get(apiURl + "/usuario")
+   .then((response)=>{
+        usuarios = response.data
+   })
+   .catch((erro)=>console.log(erro))
 }
 
 
   function validarDados(){
    let cadastro =  document.querySelector("#cadastro");
    let senha =  document.querySelector("#senha");
-    pegaDados();
-   
-   console.log(cadastro.value);
-   console.log(senha.value);
+   let foi = false;
 
-        if(data.title == cadastro.value){
-          console.log("trrr")
+   usuarios.map((prof) => {
+    console.log(prof.id)
 
-        }else{
-          console.log("bahhh")
-        }
+    console.log(prof.senha)
+    if (prof.id == cadastro.value) {
+        cadastro.value = "";
+       
+        if (prof.senha == senha.value) {
+          senha.value=""; 
+          alert("foi eeee");
+          foi = true ; 
+          logarUsuario(prof)
+          console.log(usuarioLogado)
+      }
+    } })
+      if(foi == false ){
+        alert("Usuario não encontrado ")
+
+      }
+    
+    
+  
+
+
   }
 
-  
+  pegaDados()
+
   return (
     <div className="w-screen h-screen bg-[#8B9EBB] flex justify-between">
       <div id="Parte azul" className=" flex flex-col gap-[300px]">
