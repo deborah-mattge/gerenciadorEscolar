@@ -22,7 +22,7 @@ box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.26);
 }
 
 .subtitle {
-  font-size: 24px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 600;
   line-height: 40px;
@@ -59,4 +59,12 @@ box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.26);
 
 .borda {
   border: 1px solid #1B4079;
+}
+
+.h2{
+font-size: 32px;
+font-style: normal;
+font-weight: 700;
+line-height: 32; /* 125% */
+letter-spacing: 2.56px;
 }

@@ -1,15 +1,23 @@
 import { useState } from "react";
 
-export default function ButtonLuka(props){
+export default function ButtonLuka(props) {
+  return (
+    <div className="flex bg-[#5D779F] p-4 pr-8 gap-4 rounded-lg oi">
+      <div className="buttonText  text-[#FCFCFC] flex items-center">{props.disciplina}</div>
+      <img src="bag.svg" width={"24px"} />
+    </div>
+  );
+}
 
-    const apiUrlFilmes = "https://api.themoviedb.org/3/movie/157336?";
+/*
+  const apiUrlFilmes = "https://api.themoviedb.org/3/movie/157336?";
+  const chaveAPIComImagem =
+    "api_key=42e55a6cd147de3659e21ea8878ab230&append_to_response=videos,images";
   const chaveAPI = "42e55a6cd147de3659e21ea8878ab230";
   // link original "https://api.themoviedb.org/3/discover/movie?page=200&"
   const buscaAPIPorPagina =
     "https://api.themoviedb.org/3/discover/movie?page= ";
 
-  const chaveAPIComImagem =
-    "api_key=42e55a6cd147de3659e21ea8878ab230&append_to_response=videos,images";
 
     const [texto, setTexto] = useState("abacaxi")
 
@@ -28,14 +36,4 @@ export default function ButtonLuka(props){
 
 
     }
-
-    return (
-        <div className="flex bg-[#5D779F] p-4 pr-8 gap-4 rounded-lg oi">
-        <button className="buttonText  text-[#FCFCFC]" onClick={()=>{
-            procuraMateria(props.id, 100)
-        }}>{texto}</button>
-        <img src="bag.svg" width={"24px"}/>
-        </div>
-
-    )
-}
+    */
