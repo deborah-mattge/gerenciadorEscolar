@@ -48,8 +48,10 @@ export default function cadastro(){
         )
         .then(function (response) {
           console.log(response);
+          alert("Conta cadastrada com sucesso!")
         })
         .catch(function (error) {
+          alert("Não foi posssível cadastrar sua conta!")
           console.error(error);
         });
       
@@ -74,12 +76,12 @@ export default function cadastro(){
           <div className="h-[717px] w-[717px]  rounded-xl flex flex-col gap-[30px] justify-center items-center sombra ">
               <h1 className=" text-5xl font-extrabold">Cadastro</h1>
               <div className="flex flex-col gap-8 w-full p-10 items-center pt-0">
-                  <Input id={"nome"} texto={"Nome"}></Input>
-                  <Input id={"id"} texto={"Matricula/ Cadastro"}></Input>
-                  <Input id={"idade"} texto={"idade"}></Input>
-                  <Input id={"endereco"} texto={"CEP"}></Input>
-                  <Input id={"senha"} texto={"Senha"}></Input>
-                  <select id={"nivel"} className="flex self-start mx-8">
+                  <Input id={"nome"} texto={"Nome"} tipo={"text"}></Input>
+                  <Input id={"id"} texto={"Matricula/ Cadastro"} tipo={"number"}></Input>
+                  <Input id={"idade"} texto={"idade"} tipo={"number"}></Input>
+                  <Input id={"endereco"} texto={"CEP" } tipo={"text"} ></Input>
+                  <Input id={"senha"} texto={"Senha"}tipo={"text"}></Input>
+                  <select id={"nivel"} className="flex self-start mx-8" tipo={"text"}>
                     <option defaultValue={"Escolha seu cargo"}> Escolha seu cargo</option>
                     <option value={"professor"}>professor </option>
                     <option value={"aluno"}>aluno </option>
