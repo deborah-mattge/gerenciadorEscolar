@@ -44,15 +44,21 @@ export default function Page() {
 
   getProfessores()
 
-  function adicionarTurmaAoProfessor(id) {
+  function adicionarTurmaAoProfessor(ident) {
     listaProfessores.map((professor) => {
+      console.log(professor)
+     let prof =  JSON.stringify(professor)
+     console.log(prof)
       axios
-        .put(API_URL+"/professor", {
+        .put(API_URL + "/professor", {
           id: professor.id,
-          turma: {
-            id: id,
-          },
-        })
+          turma : {
+            id : ident
+          }
+        }
+
+
+        )
         .then((response) => console.log(response))
         .catch((error) => console.log(error));
     });
@@ -64,18 +70,18 @@ export default function Page() {
 
 
 
-
+  function 
 
 
 
   const getTurmasT = async () => {
-    const response = await axios.get(API_URL+"/turma");
+    const response = await axios.get(API_URL + "/turma");
     console.log(response.data)
     listaTurmas = response.data
 
     adicionarTurmaAoProfessor(turmaObj.id)
 
-    
+
   };
 
   function adicionarTurma() {
@@ -94,7 +100,7 @@ export default function Page() {
 
   }
 
-  function ver(lista){
+  function ver(lista) {
     console.log(lista)
   }
 
@@ -113,20 +119,32 @@ export default function Page() {
     }
     console.log(lista)
     lista.map((professorasd, indice) => {
-      console.log(professorasd?.nome)
-      let nome =""
-      console.log(nome = professorasd?.nome)
-      console.log(professorasd?.nome)
 
-      if (professorasd?.nome != undefined &&
-         professorasd?.nome == input.value) {
-        professoresHtml.push(<Professor key={indice + 2}
-           nome={professorasd?.nome}
-            disciplina={professorasd.disciplina.nome} />);
-        professorObj.nome = professorasd?.nome
-        professorObj.disciplina = professorasd.disciplina.id
+
+      if (professorasd?.nome == input.value) {
+        let nome = ""
+        let disciplina = ""
+        let endereco = ""
+        let senha = ""
+
+        if (professorasd.nome != undefined && professorasd.nome != null) {
+          professorObj.nome = professorasd?.nome
+          nome = professorasd.nome
+        }
+        if (professorasd.disciplina != null  && professorasd.disciplina != undefined) {
+          disciplina = professorasd.disciplina.nome
+          professorObj.disciplina = professorasd.disciplina.id
+        }
+
+        professorObj.senha = professorasd.senha
+        professorObj.endereco = professorasd.endereco
         professorObj.id = professorasd.id
-        listaProfessores.push(professorObj)
+
+        professoresHtml.push(<Professor key={indice + 2}
+          nome={nome}
+          disciplina={disciplina} />);
+
+        listaProfessores.push(professorasd)
       }
     })
     input.value = ""
@@ -211,9 +229,9 @@ export default function Page() {
             <button
               className="bg-[#1B4079] py-4 px-12 buttonText text-[#FCFCFC] rounded-lg"
               onClick={(e) => {
-               adicionarTurma()
+                adicionarTurma()
 
-               
+
               }}
             >
               Criar Turma
