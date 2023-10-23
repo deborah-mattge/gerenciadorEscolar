@@ -63,11 +63,24 @@ export default function Page() {
 
   async function pegarDisciplinas() {
     let lista = await getAllSomething("disciplina");
+    let bah = true;
     console.log("carai");
     lista.map((disciplina) => {
-      disciplinas.push(
-        <option key={disciplina.id} value={disciplina.id}>{disciplina.nome}</option>
-      );
+      console.log("eentrein no map grnadão")
+      disciplinas.map((cocota) => {
+        console.log(cocota)
+        if (disciplina.id == cocota.key) {
+          console.log("EU TO REPETIDO CUZÃO")
+          bah = false
+        }
+      })
+      console.log(bah)
+      if (bah) {
+        disciplinas.push(
+          <option key={disciplina.id} value={disciplina.id}>{disciplina.nome}</option>
+        );
+      }
+
     });
     setDisciplinas(disciplinas)
   }
@@ -263,7 +276,7 @@ export default function Page() {
     lista.map(async (professor, indice) => {
       todosProfessoresHtml.push(
         <User
-          key={indice + 2}
+          key={professor.id}
           nome={professor.nome}
           disciplina={
             professor.disciplina != null ? professor.disciplina.nome : ""
@@ -272,6 +285,7 @@ export default function Page() {
           onde={pegarDisciplinas}
           setDisciplinas={setDisciplinas}
           add={true}
+          idProf={professor.id}
         />
       );
       console.log(indice + 2);
