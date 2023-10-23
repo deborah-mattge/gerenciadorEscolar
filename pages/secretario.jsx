@@ -8,26 +8,9 @@ export default function Secretario() {
   const API_URL = "http://localhost:8082";
   const [professores, setProfessores] = useState([]);
 
-  function getTeachers() {
-    fetch(API_URL + "/professor", {})
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        let results = data;
-        results.map((result) => {
-            console.log(result.nome)
-          if (result.nome === "aaaaaa") {
-            console.log("Im hrere")
-            let professor = <Professor key={1} materia={result.nome}></Professor>;
-            console.log(professor)
-            let teachers = professores;
-            teachers.push(professor.innerHtml);
-            console.log(teachers)
-            setProfessores(teachers);
-          }
-        });
-      });
-  }
+
+
+  
   return (
     <div className="w-screen h-screen flex justify-center">
       <div className=" w-[1330px] flex flex-col">
