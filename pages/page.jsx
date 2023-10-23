@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Subtitle from "@/components/Subtitle";
-import Professor from "@/components/Professor";
 import InputUser from "@/components/InputUser";
 import { version } from "react-dom";
 import { getAllSomething } from "@/request/get";
 import { list } from "postcss";
 import HeaderTitle from "@/components/HeaderTitle";
+import User from "@/components/User";
 
 export default function Page() {
   const [disciplinas, setDisciplinas] = useState([]);
@@ -21,6 +21,14 @@ export default function Page() {
   let API_URL = "http://localhost:8082/";
 
   const [professoresHtml, setProfessoresHtml] = useState([]);
+  const [alunosHtml, setAlunosHtml] = useState([]);
+  const [containerListaAlunos, setcontainerListaAlunos] = useState(
+    <div className="flex flex-col gap-8 pt-8 bg-[#EFEFE8] w-full">
+      {alunosHtml}
+    </div>
+  );
+  const [listaAlunosAdicionados, setListaAlunosAdicionados] =
+    useState([]);
   const [todosProfessoresHtml, setTodosProfessoresHtml] = useState([]);
   const [containerListaProfs, setcontainerListaProfs] = useState(
     <div className="flex flex-col gap-8 pt-8 bg-[#EFEFE8] w-full">
@@ -29,21 +37,21 @@ export default function Page() {
   );
   const [containerOptions, setContainerOptions] = useState(
     <select
-    id={"nivel"}
-    className="flex bg-[#efefe5] self-start"
-    tipo={"text"}
-    onClick={()=>{
-      if (props.add){
+      id={"nivel"}
+      className="flex bg-[#efefe5] self-start"
+      tipo={"text"}
+      onClick={() => {
+        if (props.add) {
           props.onde()
+        }
       }
-      }
-     } >
-    <option defaultValue={"Escolha seu cargo"}>Escolha a disciplina desse professor</option>
-  {
-      disciplinas
+      } >
+      <option defaultValue={"Escolha seu cargo"}>Escolha a disciplina desse professor</option>
+      {
+        disciplinas
 
-  }
-  </select>
+      }
+    </select>
   );
   const [containerTodosProfessoresHtml, setcontainerTodosProfessoresHtml] =
     useState(
@@ -52,7 +60,7 @@ export default function Page() {
       </div>
     );
 
-  
+
   async function pegarDisciplinas() {
     let lista = await getAllSomething("disciplina");
     console.log("carai");
@@ -63,6 +71,100 @@ export default function Page() {
     });
     setDisciplinas(disciplinas)
   }
+
+
+  async function adicionarTurmaAluno() {
+    console.log(listaProfessoresAdicionados);
+    let input = document.querySelector("#addTurma");
+    await axios.post(API_URL + "turma", {
+      nome: input.value,
+    });
+    let turmas = [];
+    turmas = await getAllSomething("turma");
+    turmas.map((map) => {
+      if (map.nome == input.value) {
+        listaAlunosAdicionados.map(async (aluno) => {
+          let alunos = [];
+          alunos = await getAllSomething("aluno");
+          alunos.map(async (student) => {
+            if (student.nome == aluno.nome) {
+              console.log(
+                student.nome +
+                " id = " +
+                student.id +
+                "id da turma = " +
+                map.id
+              );
+              await axios.put(API_URL + "aluno", {
+                nome: student.nome,
+                id: student.id,
+                turma: {
+                  id: map.id,
+                },
+              });
+              console.log("feito");
+              setListaAlunosAdicionados([]);
+              setAlunosHtml([]);
+            }
+          });
+        });
+      }
+    });
+  }
+
+  async function adicionarAluno() {
+    let input = document.querySelector("#addStudent");
+    lista = await getAllSomething("aluno");
+
+    //verifica se já foi adicionado
+    if (listaAlunosAdicionados.length > 0) {
+      console.log("O");
+      listaAlunosAdicionados.map((aluno) => {
+        console.log(aluno.nome);
+        if (aluno.nome == input.value) {
+          input.value = "";
+          alert("Já ta adicionado pô");
+        }
+      });
+    }
+
+    lista.map((aluno, indice) => {
+      if (aluno.nome == input.value) {
+        console.log(listaAlunosAdicionados.length);
+        input.value = ""
+        console.log("I'm Here");
+        console.log(alunosHtml);
+        for (let i = 0; i < alunosHtml.length; i++) {
+          if (alunosHtml[i].key == indice + 2) {
+            return;
+          }
+        }
+        alunosHtml.push(
+          <User
+            key={indice + 2}
+            nome={aluno.nome}
+            add={false}
+            disciplina={
+              aluno.turma != null ? aluno.turma.nome : ""
+            }
+            student
+          />
+        );
+
+        listaAlunosAdicionados.push(aluno);
+        console.log(listaAlunosAdicionados);
+      }
+    });
+
+    setAlunosHtml(alunosHtml);
+    setcontainerListaAlunos(
+      <div className="flex flex-col gap-8 pt-8 bg-[#EFEFE8] w-full">
+        {alunosHtml}
+      </div>
+    );
+  }
+
+
 
   async function adicionarProfessor() {
     let input = document.querySelector("#addTeacher");
@@ -83,6 +185,7 @@ export default function Page() {
     lista.map((professor, indice) => {
       if (professor.nome == input.value) {
         console.log(listaProfessoresAdicionados.length);
+        input.value = ""
 
         console.log("I'm Here");
         console.log(professoresHtml);
@@ -92,7 +195,7 @@ export default function Page() {
           }
         }
         professoresHtml.push(
-          <Professor
+          <User
             key={indice + 2}
             nome={professor.nome}
             add={false}
@@ -132,10 +235,10 @@ export default function Page() {
             if (professor.nome == prof.nome) {
               console.log(
                 professor.nome +
-                  " id = " +
-                  professor.id +
-                  "id da turma = " +
-                  map.id
+                " id = " +
+                professor.id +
+                "id da turma = " +
+                map.id
               );
               await axios.put(API_URL + "professor", {
                 nome: professor.nome,
@@ -159,7 +262,7 @@ export default function Page() {
     console.log(lista);
     lista.map(async (professor, indice) => {
       todosProfessoresHtml.push(
-        <Professor
+        <User
           key={indice + 2}
           nome={professor.nome}
           disciplina={
@@ -230,10 +333,31 @@ export default function Page() {
                 {professoresHtml}
               </div>
               {/* ou usa a variavel div */}
+
+              <Subtitle subtitle="Adicione Alunos à turma" />
+              <div className="flex gap-[88px]">
+                <InputUser
+                  id={"addStudent"}
+                  placeholder={"Escreva o nome do aluno aqui"}
+                  write
+                />
+                <button
+                  className="bg-[#1B4079] py-4 px-12 buttonText text-[#FCFCFC] rounded-lg"
+                  onClick={() => {
+                    adicionarAluno();
+                  }}
+                >
+                  Adicionar
+                </button>
+              </div>
+              <div className="flex flex-col gap-8 pt-8 bg-[#EFEFE8] w-full">
+                {alunosHtml}
+              </div>
               <button
                 className="bg-[#1B4079] py-4 px-12 buttonText text-[#FCFCFC] rounded-lg"
                 onClick={(e) => {
                   adicionarTurma();
+                  adicionarTurmaAluno()
                 }}
               >
                 Criar Turma
@@ -283,14 +407,6 @@ export default function Page() {
                 {todosProfessoresHtml}
               </div>
               {/* ou usa a variavel div */}
-              <button
-                className="bg-[#1B4079] py-4 px-12 buttonText text-[#FCFCFC] rounded-lg"
-                onClick={(e) => {
-                  adicionarTurma();
-                }}
-              >
-                Criar Turma
-              </button>
             </div>
           </div>
         )}

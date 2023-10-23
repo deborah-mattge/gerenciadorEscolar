@@ -1,7 +1,7 @@
 export default function HeaderTitle(props){
     return (
 
-        <div className="flex justify-between bg-[#1B4079] rounded-t-lg p-4 py-6 w-full items-center" onClick={async ()=> {
+        <div className="flex mt-8 justify-between bg-[#1B4079] rounded-t-lg p-4 py-6 w-full items-center" onClick={async ()=> {
               props.parentToChild(!props.able)
               if (!props.able && props.procurar){
                 props.zerarProf([])

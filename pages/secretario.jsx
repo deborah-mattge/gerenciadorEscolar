@@ -1,5 +1,5 @@
 import Subtitle from "@/components/Subtitle";
-import Professor from "@/components/Professor";
+import Professor from "@/components/User";
 import InputUser from "@/components/InputUser";
 import { useState } from "react";
 
