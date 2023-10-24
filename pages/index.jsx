@@ -1,17 +1,20 @@
-
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import { logarUsuario, usuarioLogado } from "@/data/usuario";
+import { getAllSomething } from "@/request/get";
+import { logarUsuario, setUsuarioLogado,usuarioLogado } from "@/data/usuario";
+import { useState } from "react";
 
 import Link from "next/link";
 
+
 export default function Index() {
+  const [usuarioLogado, setUsuarioLogado] = useState("");
   const axios = require("axios").default;
   let usuarios = []
   const apiURl = "http://localhost:8082";
   function pegaDados(){
-    logarUsuario("abacate")
-    
+  
+   
    axios.get(apiURl + "/usuario")
    .then((response)=>{
         usuarios = response.data
@@ -20,38 +23,78 @@ export default function Index() {
 }
 
 
+
+
   function validarDados(){
    let cadastro =  document.querySelector("#cadastro");
    let senha =  document.querySelector("#senha");
    let foi = false;
 
+
    usuarios.map((prof) => {
     console.log(prof.id)
+
 
     console.log(prof.senha)
     if (prof.id == cadastro.value) {
         cadastro.value = "";
        
         if (prof.senha == senha.value) {
-          senha.value=""; 
-          alert("foi eeee");
-          foi = true ; 
-          logarUsuario(prof)
-          console.log(usuarioLogado)
+          senha.value="";
+          foi = true ;
+          setUsuarioLogado(prof)
+          localStorage.setItem('usuarioLogado', JSON.stringify(prof));
+          console.log(usuarioLogado.turma.id + "rtet")
+
+          trocarPagina()
       }
     } })
       if(foi == false ){
         alert("Usuario não encontrado ")
 
+
       }
-    
-    
-  
+   
+
 
 
   }
 
+
+  async function trocarPagina(){
+
+
+    let usuariosAcharLogado = []
+    console.log(usuarioLogado)
+    usuariosAcharLogado = await getAllSomething("professor")
+    usuariosAcharLogado.map((u)=>{
+ 
+      if(u.id==usuarioLogado.id){
+        window.location.href = "/professor"
+       
+      }
+    })
+
+
+    usuariosAcharLogado = await getAllSomething("aluno")
+    usuariosAcharLogado.map((u)=>{
+      if(u.id==usuarioLogado.id){
+        window.location.href = "/aluno"
+       
+      }
+    })
+    usuariosAcharLogado = await getAllSomething("secretario")
+    usuariosAcharLogado.map((u)=>{
+      if(u.id==usuarioLogado.id){
+        window.location.href = "/page"
+       
+      }
+    })
+  }
+
+
   pegaDados()
+
 
   return (
     <div className="w-screen h-screen bg-[#8B9EBB] flex justify-between">
@@ -63,6 +106,7 @@ export default function Index() {
           <img src="Group 1.svg" width={"525px"} />
         </div>
       </div>
+
 
       <div id="parte branca " className="bg-white rounded-l-[50px] w-3/5 h-full flex justify-center items-center "  >
         <div className="h-[717px] w-[717px]  rounded-xl flex flex-col gap-[50px] justify-center items-center sombra ">
@@ -78,9 +122,11 @@ export default function Index() {
             </div>
            
 
+
         </div>
       </div>
     </div>
   );
+
 
 }
