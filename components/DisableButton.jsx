@@ -4,7 +4,9 @@ export default function ButtonLuka(props) {
   if (props.disciplina == "" && props.add){
     return (
       <div className="flex bg-[#1B4079] p-4 gap-4 rounded-lg oi" onClick={(e)=>{
-console.log(e)
+if (props.rosa){
+  props.funcao()
+}
       }}>
       <div className="buttonText  text-[#FCFCFC] flex items-center">{"Adicionar Disciplina"}</div>
     </div>
@@ -14,7 +16,11 @@ console.log(e)
   return (
     <div className="flex bg-[#1B4079] p-4 pr-8 gap-4 rounded-lg oi">
       <div className="buttonText  text-[#FCFCFC] flex items-center">{props.disciplina}</div>
-      <img src="bag.svg" width={"24px"} />
+
+      {
+       props.student && <img src="profile.svg" width={"24px"}/> || <img src="bag.svg" width={"24px"} />
+
+      }
     </div>
   );
 }
