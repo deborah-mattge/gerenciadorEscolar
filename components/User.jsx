@@ -10,6 +10,7 @@ const [caraios, setCaraios] = useState([])
 let clicked = false;
 let API_URL = "http://localhost:8082/";
 
+
   async function insereDisciplina(){
     let select = document.querySelector("#"+props.nome)
     console.log(props.idProf)

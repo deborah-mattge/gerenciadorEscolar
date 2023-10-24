@@ -239,10 +239,12 @@ export default function Page() {
     });
     let turmas = [];
     turmas = await getAllSomething("turma");
+    console.log(turmas)
     turmas.map((map) => {
       if (map.nome == input.value) {
         listaProfessoresAdicionados.map(async (prof) => {
           let professores = [];
+          console.log(professores)
           professores = await getAllSomething("professor");
           professores.map(async (professor) => {
             if (professor.nome == prof.nome) {
@@ -298,6 +300,23 @@ export default function Page() {
       </div>
     );
   }
+
+  
+function getStoredCartItems() {
+  if (typeof window !== "undefined") {
+    const storedCartItems = localStorage.getItem("cartItems");
+    if (storedCartItems !== null) {
+      try {
+        const cartItems = JSON.parse(storedCartItems);
+        console.log(cartItems)
+        return cartItems;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+  return [];
+}
 
   return (
     <div className="w-screen h-screen flex flex-col items-center">
