@@ -89,9 +89,9 @@ export default function Page() {
   async function adicionarTurmaAluno() {
     console.log(listaProfessoresAdicionados);
     let input = document.querySelector("#addTurma");
-    await axios.post(API_URL + "turma", {
-      nome: input.value,
-    });
+    // await axios.post(API_URL + "turma", {
+    //   nome: input.value,
+    // });
     let turmas = [];
     turmas = await getAllSomething("turma");
     turmas.map((map) => {
@@ -369,8 +369,8 @@ export default function Page() {
               </div>
               <button
                 className="bg-[#1B4079] py-4 px-12 buttonText text-[#FCFCFC] rounded-lg"
-                onClick={(e) => {
-                  adicionarTurma();
+                onClick={async (e) => {
+                  await adicionarTurma();
                   adicionarTurmaAluno()
                 }}
               >
