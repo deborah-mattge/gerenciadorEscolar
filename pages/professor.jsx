@@ -7,18 +7,33 @@ import { usuarioLogado } from "@/data/usuario";
 export default function professor(){
     const [alunosHTML, setAlunosHTML]= useState([]);
     const [able, setAble] = useState(false);
-
+    useEffect(() => {
+      const usuarioArmazenado = localStorage.getItem('usuarioLogado');
+      if (usuarioArmazenado) {
+        setUsuarioLogado(JSON.parse(usuarioArmazenado));
+      }
+    }, []);
 
     async function mapeaAlunos(){
         let alunos = []
         alunos = await getAllSomething("aluno")
-        console.log(alunos)
+        console.log(usuarioLogado)
+
+        if( usuarioLogado.turma !=undefined && usuarioLogado.turma !=null ){
+          console.log(4)
         alunos.map((aluno)=>{
-          if(aluno.turma.id == usuarioLogado.turma.id){
-            alunosHTML.push(<InputUser nome={aluno.nome} key={aluno.id}></InputUser>)
-          }
+          console.log(3)
+            if(aluno.turma.id!=null && aluno.turma.id == usuarioLogado.turma.id){
+              console.log(2)
+              alunosHTML.push(<InputUser nome={aluno.nome} key={aluno.id}></InputUser>)
+            }
+          
+            console.log(e)
+          
+        
            
         })
+      }
         setAlunosHTML( alunosHTML)
         }
 

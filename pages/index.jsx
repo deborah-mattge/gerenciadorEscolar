@@ -1,18 +1,19 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import { logarUsuario, usuarioLogado } from "@/data/usuario";
 import { getAllSomething } from "@/request/get";
+import { logarUsuario, setUsuarioLogado,usuarioLogado } from "@/data/usuario";
 
 
 import Link from "next/link";
 
 
 export default function Index() {
+ 
   const axios = require("axios").default;
   let usuarios = []
   const apiURl = "http://localhost:8082";
   function pegaDados(){
-    logarUsuario("abacate")
+  
    
    axios.get(apiURl + "/usuario")
    .then((response)=>{
@@ -42,7 +43,7 @@ export default function Index() {
           senha.value="";
           foi = true ;
           logarUsuario(prof)
-          console.log(usuarioLogado)
+          console.log(usuarioLogado.turma.id + "rtet")
           trocarPagina()
       }
     } })
@@ -52,9 +53,6 @@ export default function Index() {
 
       }
    
-   
- 
-
 
 
 
