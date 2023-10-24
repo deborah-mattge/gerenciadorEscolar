@@ -5,6 +5,7 @@ import { logarUsuario, setUsuarioLogado,usuarioLogado } from "@/data/usuario";
 import { useState } from "react";
 
 import Link from "next/link";
+import { getOneLS } from "@/request/getLocalStorage";
 
 
 export default function Index() {
@@ -44,7 +45,7 @@ export default function Index() {
           foi = true ;
           setUsuarioLogado(prof)
           localStorage.setItem('usuarioLogado', JSON.stringify(prof));
-          console.log(usuarioLogado.turma.id + "rtet")
+          console.log(getOneLS("usuarioLogado"))
 
           trocarPagina()
       }

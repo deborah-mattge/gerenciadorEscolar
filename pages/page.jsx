@@ -3,6 +3,7 @@ import Subtitle from "@/components/Subtitle";
 import InputUser from "@/components/InputUser";
 import { version } from "react-dom";
 import { getAllSomething } from "@/request/get";
+import { getOneSomething } from "@/request/get";
 import { list } from "postcss";
 import HeaderTitle from "@/components/HeaderTitle";
 import User from "@/components/User";
@@ -255,13 +256,30 @@ export default function Page() {
                 "id da turma = " +
                 map.id
               );
+              let profAPI = await getOneSomething("professor",professor.id)
+              console.log(profAPI)
+              let profRequest = profAPI
+              if (profAPI.disciplina != null){
+                profRequest.disciplina = profAPI.disciplina.id
+              }
+
+              console.log(profRequest)
+
               await axios.put(API_URL + "professor", {
-                nome: professor.nome,
-                id: professor.id,
+                nome: profRequest.nome,
+                id: profRequest.id,
+                endereco: profRequest.endereco,
+                idade: profRequest.idade,
+                senha: profRequest.senha,
                 turma: {
                   id: map.id,
                 },
+                disciplina:{
+                    id:profRequest.disciplina
+
+                }
               });
+              console.log()
               console.log("feito");
               setListaProfessoresAdicionados([]);
               setProfessoresHtml([]);
