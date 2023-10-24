@@ -3,16 +3,23 @@ import { useState } from "react";
 import Subtitle from "@/components/Subtitle";
 import InputUser from "@/components/InputUser";
 import { getAllSomething } from "@/request/get";
-import { usuarioLogado } from "@/data/usuario";
+import { useEffect } from "react";
+import { getOneLS } from "@/request/getLocalStorage";
 export default function professor(){
     const [alunosHTML, setAlunosHTML]= useState([]);
     const [able, setAble] = useState(false);
-    useEffect(() => {
-      const usuarioArmazenado = localStorage.getItem('usuarioLogado');
-      if (usuarioArmazenado) {
-        setUsuarioLogado(JSON.parse(usuarioArmazenado));
-      }
-    }, []);
+    let usuarioLogado=""; 
+    // useEffect(() => {
+    //   const usuarioArmazenado = localStorage.getItem('usuarioLogado');
+    //   console.log(usuarioArmazenado)
+    //   if (usuarioArmazenado) {
+    //     usuarioLogado(JSON.parse(usuarioArmazenado));
+    //   }
+    // }, []);
+
+
+   usuarioLogado = getOneLS("usuarioLogado")
+    console.log(usuarioLogado)
 
     async function mapeaAlunos(){
         let alunos = []
@@ -28,7 +35,6 @@ export default function professor(){
               alunosHTML.push(<InputUser nome={aluno.nome} key={aluno.id}></InputUser>)
             }
           
-            console.log(e)
           
         
            

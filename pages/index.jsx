@@ -2,13 +2,13 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { getAllSomething } from "@/request/get";
 import { logarUsuario, setUsuarioLogado,usuarioLogado } from "@/data/usuario";
-
+import { useState } from "react";
 
 import Link from "next/link";
 
 
 export default function Index() {
- 
+  const [usuarioLogado, setUsuarioLogado] = useState("");
   const axios = require("axios").default;
   let usuarios = []
   const apiURl = "http://localhost:8082";
@@ -42,8 +42,10 @@ export default function Index() {
         if (prof.senha == senha.value) {
           senha.value="";
           foi = true ;
-          logarUsuario(prof)
+          setUsuarioLogado(prof)
+          localStorage.setItem('usuarioLogado', JSON.stringify(prof));
           console.log(usuarioLogado.turma.id + "rtet")
+
           trocarPagina()
       }
     } })
