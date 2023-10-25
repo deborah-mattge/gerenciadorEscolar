@@ -8,7 +8,15 @@ import { getOneLS } from "@/request/getLocalStorage";
 export default function professor(){
     const [alunosHTML, setAlunosHTML]= useState([]);
     const [able, setAble] = useState(false);
+    const [notas, setNotas] = useState([]);
+    const adicionarNota = (novaNota) => {
+      console.log(novaNota)
+      setNotas([...notas, novaNota]);
+  };
+
     let usuarioLogado=""; 
+    let alunos = [] 
+    
     // useEffect(() => {
     //   const usuarioArmazenado = localStorage.getItem('usuarioLogado');
     //   console.log(usuarioArmazenado)
@@ -22,7 +30,8 @@ export default function professor(){
     console.log(usuarioLogado)
 
     async function mapeaAlunos(){
-        let alunos = []
+      let newAlunosHTML = [];
+        
         alunos = await getAllSomething("aluno")
         console.log(usuarioLogado)
 
@@ -32,7 +41,7 @@ export default function professor(){
           console.log(aluno.turma)
             if(aluno.turma.id!=null && aluno.turma.id == usuarioLogado.turma.id){
               console.log(2)
-              alunosHTML.push(<InputUser nome={aluno.nome} key={aluno.id}></InputUser>)
+              newAlunosHTML.push(<InputUser nome={aluno.nome} key={aluno.id} parentToChild={adicionarNota}></InputUser>)
             }
           
           
@@ -40,7 +49,7 @@ export default function professor(){
            
         })
       }
-        setAlunosHTML( alunosHTML)
+        setAlunosHTML( newAlunosHTML)
         }
 
 
@@ -64,17 +73,8 @@ export default function professor(){
             <div className="flex-col flex gap-4">
    
               <div className="flex gap-[88px]">
-                <InputUser
-                  id={"addNomeProva"}
-                  placeholder={"Escreva o nome da prova"}
-                  write
-                />
-                   <button
-                  className="bg-[#1B4079] py-4 px-12 buttonText text-[#FCFCFC] rounded-lg"
-                  onClick={() => {
-                    adicionarNomeProva();
-                  }}
-                >Adiciona</button>
+             
+               
               </div>
             </div>
 
@@ -85,14 +85,27 @@ export default function professor(){
                 {alunosHTML}
               </div>
               <div className="flex flex-col gap-8 pt-8 bg-[#EFEFE8] w-full">
-           
+             
+                {
+                alunosHTML.map((aluno, index) => (
+                  
+                  <InputUser
+                    key={index}
+                    id={"addNomeProva"}
+                    placeholder={"Escreva o nome da prova"}
+                    write
+                  />
+                 
+                  
+                  ))}
+             
               </div>
               {/* ou usa a variavel div */}
               <button
                 className="bg-[#1B4079] py-4 px-12 buttonText text-[#FCFCFC] rounded-lg"
-                onClick={(e) => {
-                  adicionarTurma();
-                }}
+                // onClick={(e) => {
+                //   adicionarTurma();
+                // }}
               >
                 Criar Turma
               </button>
