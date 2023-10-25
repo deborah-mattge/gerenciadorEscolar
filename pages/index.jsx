@@ -9,7 +9,6 @@ import { getOneLS } from "@/request/getLocalStorage";
 
 
 export default function Index() {
-  const [usuarioLogado, setUsuarioLogado] = useState("");
   const axios = require("axios").default;
   let usuarios = []
   const apiURl = "http://localhost:8082";
@@ -36,17 +35,15 @@ export default function Index() {
     console.log(prof.id)
 
 
-    console.log(prof.senha)
     if (prof.id == cadastro.value) {
         cadastro.value = "";
+        
        
         if (prof.senha == senha.value) {
           senha.value="";
           foi = true ;
-          setUsuarioLogado(prof)
+        
           localStorage.setItem('usuarioLogado', JSON.stringify(prof));
-          console.log(getOneLS("usuarioLogado"))
-
           trocarPagina()
       }
     } })
@@ -66,11 +63,14 @@ export default function Index() {
 
 
     let usuariosAcharLogado = []
-    console.log(usuarioLogado)
+    let usuarioLogado = getOneLS("usuarioLogado")
+    console.log(usuarioLogado.id)
     usuariosAcharLogado = await getAllSomething("professor")
     usuariosAcharLogado.map((u)=>{
  
       if(u.id==usuarioLogado.id){
+        console.log("to aqui")
+
         window.location.href = "/professor"
        
       }
