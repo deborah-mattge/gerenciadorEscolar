@@ -1,18 +1,13 @@
 export default function InputUser(props) {
     
-    const pegarValorInput = (event) => {
-        const novaNota = event.target.value;
-        if (props.parentToChild) {
-            props.parentToChild(novaNota);
-        }
-    };
+
 
     if (props.write) {
 
         return (
             <input type="text" name="" id={props.id} className={"w-full p-4 bg-[#FCFCFC] inputText rounded-lg placeholder:text-[#1B4079]" +
-                (props.write ? " border-solid border-2 border-[#1B4079] outline-none" : " inputDisable bg-[#E8E8E8]")} placeholder={props.placeholder} 
-                onChange={pegarValorInput}/>
+                (props.write ? " p-3 border-solid border-2 border-[#1B4079] outline-none" : " inputDisable bg-[#E8E8E8]")} placeholder={props.placeholder} 
+              />
         )
     }
 
