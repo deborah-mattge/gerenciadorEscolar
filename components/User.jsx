@@ -15,15 +15,47 @@ export default function User(props) {
     let select = document.querySelector("#" + props.nome)
     console.log(props.idProf)
     console.log(select.value)
-    await axios.put(API_URL + "professor", {
-      nome: props.nome,
-      id: props.idProf,
-      disciplina: {
-        id: select.value
-      }
-    }).then((promisse) => {
-      console.log(promisse)
-    })
+    let profAPI = await getOneSomething("professor", props.idProf)
+    console.log(profAPI)
+    let profRequest = profAPI
+
+    if (profAPI.turma != null) {
+      profRequest.turma = profAPI.turma.id
+    }
+    console.log(profRequest)
+    console.log(select.value)
+    if (profAPI.turma == null) {
+      await axios.put(API_URL + "professor", {
+        nome: profAPI.nome,
+        id: profAPI.id,
+        endereco:profAPI.endereco,
+        idade:profAPI.idade,
+        senha:profAPI.senha,
+        disciplina: {
+          id: select.value
+        },
+        turma:null
+      }).then((promisse) => {
+        console.log(promisse)
+      })
+    } else {
+      await axios.put(API_URL + "professor", {
+        nome: profAPI.nome,
+        id: profAPI.id,
+        endereco:profAPI.endereco,
+        idade:profAPI.idade,
+        senha:profAPI.senha,
+        disciplina: {
+          id: select.value
+        },
+        turma:{
+          id:profRequest.turma
+        }
+      }).then((promisse) => {
+        console.log(promisse)
+      })
+    }
+
   }
 
 
@@ -66,18 +98,21 @@ return turmaa
     professores = await pegaUser(turma, "professor");
     let alunos = []
     alunos = await pegaUser(turma, "aluno");
-    alunos.map((aluno)=>{
-      professores.map((professor)=>{
-        if (professor.disciplina!=null){
-          console.log("oi")
-          axios.post(API_URL+"boletim", {
-            idDisciplina:professor.disciplina,
-            idTurma:turma.id,
-            idAluno:aluno.id
-          })
-        } 
-      })
-    })
+
+
+    axios.post(API_URL+"boletim/"+turma.id)
+    // alunos.map((aluno)=>{
+    //   professores.map((professor)=>{
+    //     if (professor.disciplina!=null){
+    //       console.log("oi")
+    //       axios.post(API_URL+"boletim", {
+    //         idDisciplina:professor.disciplina,
+    //         idTurma:turma.id,
+    //         idAluno:aluno.id
+    //       })
+    //     } 
+    //   })
+    // })
 
 
 
@@ -96,7 +131,7 @@ return turmaa
     <div className="flex-col flex gap-[12px] w-full bg-[#efefe5] rounded-lg">
       <div className="flex gap-[88px] w-full bg-[#efefe5] rounded-lg">
         <InputUser nome={props.nome} />
-        <ButtonLuka profId={props.idProf} texto={"Gerar Boletim"}  gerarBoletim={props.boletim} student={props.student} add={props.add} boletim={gerarBoletim} disciplina={props.disciplina} funcao={insereDisciplina} />
+        <ButtonLuka profId={props.idProf} texto={props.texto}  rosa={props.rosa} gerarBoletim={props.boletim} student={props.student} add={props.add} boletim={gerarBoletim} disciplina={props.disciplina} funcao={insereDisciplina} />
       </div>
       {props.add && (
         <select

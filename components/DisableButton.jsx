@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function ButtonLuka(props) {
-  if (props.disciplina == "" && props.add){
+  if ( props.add){
     return (
       <div className="flex bg-[#1B4079] p-4 gap-4 rounded-lg oi" onClick={(e)=>{
 if (props.rosa){

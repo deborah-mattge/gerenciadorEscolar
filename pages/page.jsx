@@ -323,11 +323,13 @@ export default function Page() {
           disciplina={
             professor.disciplina != null ? professor.disciplina.nome : ""
           }
+          texto = {professor.disciplina!=null ? professor.disciplina.nome : "Adicionar Disciplina"}
           disciplinas={disciplinas}
           onde={pegarDisciplinas}
           setDisciplinas={setDisciplinas}
           add={true}
           idProf={professor.id}
+          rosa={true}
         />
       );
       console.log(indice + 2);
