@@ -17,6 +17,7 @@ export default function Page() {
 
   const [able, setAble] = useState(false);
   const [ableDisciplina, setAbleDisciplina] = useState(false);
+  const [ableGerarBoletim, setAbleGerarBoletim] = useState(false);
 
   const axios = require("axios").default;
   let API_URL = "http://localhost:8082/";
@@ -28,6 +29,7 @@ export default function Page() {
       {alunosHtml}
     </div>
   );
+  const [todasTurmasHTML, setTodasTurmasHTML] = useState([]);
   const [listaAlunosAdicionados, setListaAlunosAdicionados] =
     useState([]);
   const [todosProfessoresHtml, setTodosProfessoresHtml] = useState([]);
@@ -112,6 +114,9 @@ export default function Page() {
               await axios.put(API_URL + "aluno", {
                 nome: student.nome,
                 id: student.id,
+                senha: student.senha,
+                endereco: student.endereco,
+                idade: student.idade,
                 turma: {
                   id: map.id,
                 },
@@ -256,29 +261,46 @@ export default function Page() {
                 "id da turma = " +
                 map.id
               );
-              let profAPI = await getOneSomething("professor",professor.id)
+              let profAPI = await getOneSomething("professor", professor.id)
               console.log(profAPI)
               let profRequest = profAPI
-              if (profAPI.disciplina != null){
+              if (profAPI.disciplina != null) {
                 profRequest.disciplina = profAPI.disciplina.id
               }
 
-              console.log(profRequest)
+              console.log(profRequest.disciplina)
 
-              await axios.put(API_URL + "professor", {
-                nome: profRequest.nome,
-                id: profRequest.id,
-                endereco: profRequest.endereco,
-                idade: profRequest.idade,
-                senha: profRequest.senha,
-                turma: {
-                  id: map.id,
-                },
-                disciplina:{
-                    id:profRequest.disciplina
-
-                }
-              });
+              if (profAPI.disciplina == null) {
+                await axios.put(API_URL + "professor", {
+                  nome: profRequest.nome,
+                  id: profRequest.id,
+                  endereco: profRequest.endereco,
+                  idade: profRequest.idade,
+                  senha: profRequest.senha,
+                  turma: {
+                    id: map.id
+                  },
+                  disciplina: null
+                }).then((response) => {
+                  console.log(response)
+                });
+              } else {
+                await axios.put(API_URL + "professor", {
+                  nome: profRequest.nome,
+                  id: profRequest.id,
+                  endereco: profRequest.endereco,
+                  idade: profRequest.idade,
+                  senha: profRequest.senha,
+                  turma: {
+                    id: map.id
+                  },
+                  disciplina: {
+                    id: profRequest.disciplina
+                  }
+                }).then((response) => {
+                  console.log(response)
+                });
+              }
               console.log()
               console.log("feito");
               setListaProfessoresAdicionados([]);
@@ -319,22 +341,22 @@ export default function Page() {
     );
   }
 
-  
-function getStoredCartItems() {
-  if (typeof window !== "undefined") {
-    const storedCartItems = localStorage.getItem("cartItems");
-    if (storedCartItems !== null) {
-      try {
-        const cartItems = JSON.parse(storedCartItems);
-        console.log(cartItems)
-        return cartItems;
-      } catch (error) {
-        console.error(error);
+
+  function getStoredCartItems() {
+    if (typeof window !== "undefined") {
+      const storedCartItems = localStorage.getItem("cartItems");
+      if (storedCartItems !== null) {
+        try {
+          const cartItems = JSON.parse(storedCartItems);
+          console.log(cartItems)
+          return cartItems;
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
+    return [];
   }
-  return [];
-}
 
   return (
     <div className="w-screen h-screen flex flex-col items-center">
@@ -446,12 +468,7 @@ function getStoredCartItems() {
             </div>
 
             <div className="flex-col flex gap-4 w-full h-max">
-              {modalAddDisciplina && (
-                <ModalAddDisciplina
-                  isOpen={modalAddDisciplina}
-                  setIsOpen={setModalAddDisciplina}
-                />
-              )}
+
               <Subtitle subtitle="Lista de professores" />
 
               <div className="flex flex-col gap-8 pt-8 bg-[#EFEFE8] w-full">
@@ -461,7 +478,89 @@ function getStoredCartItems() {
             </div>
           </div>
         )}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <HeaderTitle
+          texto={"Atribuir Disciplina a professor"}
+          procurar
+          zerarProf={setTodasTurmasHTML}
+          able={ableGerarBoletim}
+          procuraProf={procuraTurmas}
+          parentToChild={setAbleGerarBoletim}
+        />
+        {!ableGerarBoletim && (
+          <div className="flex flex-col py-12 px-16 gap-16 rounded-b-lg bg-[#EFEFE9] mb-16">
+            <div className="flex-col flex gap-4">
+              <Subtitle subtitle="Procure por um professor específico" />
+              <div className="flex gap-[88px]">
+                <InputUser
+                  id={"addTurma"}
+                  placeholder={"Escreva o nome do professor"}
+                  write
+                />
+                <button
+                  className="bg-[#1B4079] py-4 px-12 buttonText text-[#FCFCFC] rounded-lg"
+                  onClick={() => {
+                    adicionarProfessor();
+                  }}
+                >
+                  Procurar
+                </button>
+              </div>
+            </div>
+
+            <div className="flex-col flex gap-4 w-full h-max">
+
+              <Subtitle subtitle="Lista das turmas" />
+
+              <div className="flex flex-col gap-8 pt-8 bg-[#EFEFE8] w-full">
+                {todasTurmasHTML}
+              </div>
+              {/* ou usa a variavel div */}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
+
+
+
+  async function procuraTurmas() {
+    let lista = []
+    lista = await getAllSomething("turma")
+
+    lista.map((turma, indice)=>{
+      todasTurmasHTML.push( <User
+        key={turma.id}
+        nome={turma.nome}
+        texto={"Gerar Boletim"}
+        disciplina={"Gerar Boletim"}
+        add={false}
+        boletim={true}
+      />)
+    })
+    setTodasTurmasHTML(todasTurmasHTML)
+    console.log(todasTurmasHTML)
+    setcontainerTodosProfessoresHtml(
+      <div className="flex flex-col gap-8 pt-8 bg-[#EFEFE8] w-full">
+        {todasTurmasHTML}
+      </div>
+    );
+  }
 }
+
+
+

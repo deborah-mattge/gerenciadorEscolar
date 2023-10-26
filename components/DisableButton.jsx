@@ -8,13 +8,30 @@ if (props.rosa){
   props.funcao()
 }
       }}>
-      <div className="buttonText  text-[#FCFCFC] flex items-center">{"Adicionar Disciplina"}</div>
+      <div className="buttonText  text-[#FCFCFC] flex items-center">{props.texto}</div>
     </div>
     )
 
+  } else if (props.gerarBoletim==true){
+    return (
+<div className="flex bg-[#1B4079] p-4 pr-8 gap-4 rounded-lg oi" onClick={(e)=>{
+        props.boletim()
+            }}>
+      <div className="buttonText  text-[#FCFCFC] flex items-center">{props.texto}</div>
+
+      {/* {
+       props.student && <img src="profile.svg" width={"24px"}/> || <img src="bag.svg" width={"24px"} />
+
+      } */}
+    </div>
+    )
+    
+
   }
   return (
-    <div className="flex bg-[#1B4079] p-4 pr-8 gap-4 rounded-lg oi">
+    <div className="flex bg-[#1B4079] p-4 pr-8 gap-4 rounded-lg oi" onClick={(e)=>{
+        props.funcao()
+            }}>
       <div className="buttonText  text-[#FCFCFC] flex items-center">{props.disciplina}</div>
 
       {
