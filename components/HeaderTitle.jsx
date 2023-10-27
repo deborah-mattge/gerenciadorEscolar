@@ -10,7 +10,10 @@ export default function HeaderTitle(props){
               console.log("vo procurar")
               props.procuraProf()
             }
-            if (props.mapear){
+            if (props.apagar && !props.able){
+              props.apaga([])
+            }
+            if (props.mapear && props.able){
               props.mapeaAlunos()
             }
 
