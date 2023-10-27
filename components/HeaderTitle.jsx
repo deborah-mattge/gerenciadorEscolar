@@ -13,6 +13,9 @@ export default function HeaderTitle(props){
             if (props.mapear){
               props.mapeaAlunos()
             }
+            if(props.media){
+              props.pegaMedia()
+            }
 
 
         }}>
