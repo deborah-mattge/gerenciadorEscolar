@@ -108,10 +108,18 @@ export default function professor() {
                     aluno: {
                       id: aluno.key,
                     },
+                    nome: nomeProva,
                     nota: document.querySelector("#" + aluno.props.nome).value,
                     professor: {
                       id: usuarioLogado.id,
                     },
+                    disciplina:{
+                      id: usuarioLogado.disciplina.id
+                    },
+                    turma:{
+                      id: usuarioLogado.turma.id
+                    }
+                    
                   }
                   );
                 });
